@@ -1,0 +1,12 @@
+
+double tempData = 0;
+void setup() {
+#define TEMPPIN A0
+Serial.begin(9600);
+Particle.variable("tempData", tempData);
+}
+
+void loop() {
+tempData = (analogRead(TEMPPIN)-620)/12.4;
+delay(1000);
+}
