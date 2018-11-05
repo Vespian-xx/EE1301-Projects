@@ -1,0 +1,45 @@
+<!DOCTYPE HTML>
+<html>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+<body>
+	Current Temperature:<span id="current_temp"></span>&deg; F<br>
+	Desired Temperature:<span id="desired_temp"></span>&deg; F<br>
+
+	<button id="connectbutton" onclick="start()">Refresh Data</button>
+
+	<script type="text/javascript">
+
+		function start(objButton) {
+			var deviceID = "3d0025000247363333343435";
+			var accessToken = "bf171e87c331e26d631f9f39d065e32684d2d428";
+			var baseURL = "https://api.particle.io/v1/devices/"
+
+			var varName = "current_temp";
+			requestURL = baseURL + deviceID + "/" + varName + "/?access_token=" + accessToken;
+			$.getJSON(requestURL, function(json) {
+				document.getElementById("current_temp").innerHTML = + json.result;
+			});
+
+			var varName = "desired_temp";
+			requestURL = baseURL + deviceID + "/" + varName + "/?access_token=" + accessToken;
+			$.getJSON(requestURL, function(json) {
+				document.getElementById("desired_temp").innerHTML = json.result;
+			});
+		}
+	</script>
+	<br>
+	<form action="https://api.particle.io/v1/devices/3d0025000247363333343435/set_temp?access_token=bf171e87c331e26d631f9f39d065e32684d2d428"method="POST">
+	<input type="text" name="args" value="(50-90)"><br>
+	<input type="submit" value="Set Temperature">
+	</form>
+	<br>
+	<form
+	action="https://api.particle.io/v1/devices/3d0025000247363333343435/setMode?access_token=bf171e87c331e26d631f9f39d065e32684d2d428" method="POST">
+	<input type="radio" name="args" value="Heat">Set thermostat mode to HEAT.<br>
+	<input type="radio" name="args" value="Off">Set thermostat mode to OFF.<br>
+	<input type="radio" name="args" value="Cool">Set thermostat mode to COOL.<br>
+	<input type="radio" name="args" value="RedAlert">Set thermostat mode to RedAlert.<br>
+	<input type="submit" value="Do it!">
+	</form>
+</body>
+</html>
